@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         return Promise.resolve({
-          id: 1,
+          id: "1",
           name: "Marcelo Bracet",
           email: "marcelo.bracet1@gmail.com",
           avatar: "https://github.com/marcelobxd.png",
@@ -33,6 +33,9 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: "/auth/Login",
+  },
 };
 
 export default NextAuth(authOptions);

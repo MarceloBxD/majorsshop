@@ -44,20 +44,27 @@ export const Header: React.FC = () => {
             ))}
           </ul>
           {authStatus === "authenticated" ? (
-            <Button onClick={() => signOut()} variant="default">
+            <Button onClick={() => signOut()} variant="destructive">
               Sair
             </Button>
           ) : (
-            <Button onClick={() => signIn()} variant="default">
+            <Button
+              className="rounded-xl bg-[#212121]"
+              onClick={() => signIn()}
+              variant="default"
+            >
               Login
             </Button>
           )}
         </nav>
         {authStatus === "authenticated" && (
-          <Avatar className="cursor-pointer">
-            <AvatarImage src="https://github.com/marcelobxd.png" />
-            <AvatarFallback>MB</AvatarFallback>
-          </Avatar>
+          <div className="flex items-center gap-3 shadow-md p-2">
+            <h3>Olá, {session?.user?.name}</h3>
+            <Avatar className="cursor-pointer">
+              <AvatarImage src="https://github.com/marcelobxd.png" />
+              <AvatarFallback>MB</AvatarFallback>
+            </Avatar>
+          </div>
         )}
       </div>
     </header>
