@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { homeFilterList } from "@/data/homeFilterList";
+
 export default function Home() {
   return (
     <main className="flex gap-10 flex-col min-h-screen p-8">

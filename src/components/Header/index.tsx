@@ -1,24 +1,28 @@
 "use client";
 
 import React from "react";
-import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
+
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { signIn } from "next-auth/react";
 
 const navlinks = [
   {
     id: 1,
     label: "Categorias",
+    link: "",
   },
   {
     id: 2,
     label: "Brands",
+    link: "",
   },
   {
     id: 3,
     label: "Blog",
+    link: "/blog",
   },
 ];
 
@@ -38,9 +42,16 @@ export const Header: React.FC = () => {
         <nav className="items-center gap-3 flex">
           <ul className="flex gap-3">
             {navlinks.map((link) => (
-              <li className="cursor-pointer" key={link.id}>
-                {link.label}
-              </li>
+              <Link
+                href={
+                  link.link == "/blog" && authStatus === "unauthenticated"
+                    ? "/auth/Login"
+                    : link.link
+                }
+                key={link.id}
+              >
+                <li className="cursor-pointer">{link.label}</li>
+              </Link>
             ))}
           </ul>
           {authStatus === "authenticated" ? (
