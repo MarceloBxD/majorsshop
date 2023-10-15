@@ -61,7 +61,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-3 shadow-md p-2">
             <h3>Olá, {session?.user?.name}</h3>
             <Avatar className="cursor-pointer">
-              <AvatarImage src="https://github.com/marcelobxd.png" />
+              <AvatarImage src={session?.user?.avatar} />
               <AvatarFallback>MB</AvatarFallback>
             </Avatar>
           </div>

@@ -2,6 +2,16 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
 import type { NextAuthOptions } from "next-auth";
 
+import prisma from "../../../libs/prisma";
+
+type AuthUser = {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  role: string;
+};
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -19,20 +29,43 @@ export const authOptions: NextAuthOptions = {
       },
       authorize: async (credentials, req) => {
         if (credentials) {
-          if (credentials.username !== "marcelo.bracet1@gmail.com") {
+          try {
+            const user = await prisma.user.findUnique({
+              where: {
+                email: credentials.username,
+                password: credentials.password,
+              },
+            });
+
+            if (user) {
+              return Promise.resolve(user);
+            }
+
             return Promise.resolve(null);
+          } catch (err) {
+            console.log(err);
           }
         }
-
-        return Promise.resolve({
-          id: "1",
-          name: "Marcelo Bracet",
-          email: "marcelo.bracet1@gmail.com",
-          avatar: "https://github.com/marcelobxd.png",
-        });
       },
     }),
   ],
+  //   Os dados retornados de authorize são armazenados em "user" utilizado abaixo.
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.user = user;
+      }
+
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (token) {
+        session.user = token.user as AuthUser;
+      }
+
+      return session;
+    },
+  },
   pages: {
     signIn: "/auth/Login",
   },
