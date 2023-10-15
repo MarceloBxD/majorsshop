@@ -2,7 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
 import type { NextAuthOptions } from "next-auth";
 
-import prisma from "../../../libs/prisma";
+import { getUserByEmailAndPassword } from "@/utils/usersFuncs";
 
 type AuthUser = {
   id: number;
@@ -30,12 +30,10 @@ export const authOptions: NextAuthOptions = {
       authorize: async (credentials, req) => {
         if (credentials) {
           try {
-            const user = await prisma.user.findUnique({
-              where: {
-                email: credentials.username,
-                password: credentials.password,
-              },
-            });
+            const user = await getUserByEmailAndPassword(
+              credentials.username,
+              credentials.password
+            );
 
             if (user) {
               return Promise.resolve(user);
